@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block main %}{% endblock %}
+{% block lead %}{% endblock %}
+{% block body %}
+    <div class="demo-container">
+        <div id="gridContainer"></div>
+    </div>
+    <div class="widget-container">
+        <div id="file-uploader"></div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $(function(){
+        var gridContainer = $("#gridContainer");
+        gridContainer.dxDataGrid({
+            dataSource: "data",
+            paging: {
+                pageSize: 2
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [5, 10, 20],
+                showInfo: true
+            },
+            columns: ["Name", "Size", "Created" ,
+            {
+                width: 100,
+                alignment: 'center',
+                cellTemplate: function (container, options) {
+                    $('<a/>').addClass('dx-link').attr("href","/admin/download/"+options.data.href)
+                        .text('Command')
+                        .on('dxclick', function () {
+                            //Do something with options.data;
+                        })
+                        .appendTo(container);
+                }
+            },],
+            showBorders: true
+        });
+        var fileUploader = $("#file-uploader").dxFileUploader({
+            multiple: false,
+            accept: "*",
+            value: [],
+            uploadMode: "instantly",
+            uploadUrl: "upload",
+            onValueChanged: function(e) {
+                var files = e.value;
+                if(files.length > 0) {
+                    $("#selected-files").show();
+                } else {
+                    $("#selected-files").hide();
+                }
+                gridContainer.dxDataGrid("instance").refresh();
+            }
+        }).dxFileUploader("instance");
+    });
+</script>
+{% endblock %}

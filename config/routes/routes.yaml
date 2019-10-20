@@ -1,0 +1,18 @@
+# config/routes.yaml
+app_index:
+    path: /
+    controller: App\Controller\IndexController::index
+app_admin:
+    path: /admin/
+    controller: App\Controller\IndexController::admin
+app_admin_data:
+    path: /admin/data/
+    controller: App\Controller\IndexController::data
+app_admin_upload:
+    path: /admin/upload
+    controller: App\Controller\IndexController::upload
+    methods:    POST
+app_admin_download:
+    path: /admin/download/{name}
+    controller: App\Controller\IndexController::download
+    methods:    GET
